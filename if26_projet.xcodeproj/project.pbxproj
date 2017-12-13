@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B4065E911FE197EF00E9D4D3 /* Gare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4065E901FE197EF00E9D4D3 /* Gare.swift */; };
+		B4065E951FE19A0A00E9D4D3 /* Trajet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4065E941FE19A0A00E9D4D3 /* Trajet.swift */; };
 		B42EFA531FD050900072024D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EFA521FD050900072024D /* AppDelegate.swift */; };
 		B42EFA551FD050900072024D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EFA541FD050900072024D /* ViewController.swift */; };
 		B42EFA581FD050900072024D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B42EFA561FD050900072024D /* Main.storyboard */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B4065E901FE197EF00E9D4D3 /* Gare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gare.swift; sourceTree = "<group>"; };
+		B4065E941FE19A0A00E9D4D3 /* Trajet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trajet.swift; sourceTree = "<group>"; };
 		B42EFA4F1FD050900072024D /* if26_projet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = if26_projet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B42EFA521FD050900072024D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B42EFA541FD050900072024D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +67,8 @@
 				B42EFA5E1FD050900072024D /* LaunchScreen.storyboard */,
 				B42EFA611FD050900072024D /* Info.plist */,
 				B42EFA591FD050900072024D /* if26_projet.xcdatamodeld */,
+				B4065E901FE197EF00E9D4D3 /* Gare.swift */,
+				B4065E941FE19A0A00E9D4D3 /* Trajet.swift */,
 			);
 			path = if26_projet;
 			sourceTree = "<group>";
@@ -139,6 +145,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4065E911FE197EF00E9D4D3 /* Gare.swift in Sources */,
+				B4065E951FE19A0A00E9D4D3 /* Trajet.swift in Sources */,
 				B42EFA5B1FD050900072024D /* if26_projet.xcdatamodeld in Sources */,
 				B42EFA551FD050900072024D /* ViewController.swift in Sources */,
 				B42EFA531FD050900072024D /* AppDelegate.swift in Sources */,
