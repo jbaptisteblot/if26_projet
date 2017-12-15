@@ -20,3 +20,15 @@ public class Gare {
         return "Gare(id : \(id), name : \(name))"
     }
 }
+
+struct GareGlobalJsonData : Codable {
+    let places : [StopAreaJson]
+}
+struct StopAreaJson : Codable {
+    let stop_area: GareJSON
+}
+struct GareJSON : Codable {
+    let id: String
+    let name:String
+}
+
