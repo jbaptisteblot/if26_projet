@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aDs-qs-RUp">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bwg-dH-i5B">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -57,6 +57,14 @@
                                     <action selector="SaveButtonClicked:" destination="s9L-2W-GWU" eventType="touchUpInside" id="Lb5-FB-dhX"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zdd-QG-h0j">
+                                <rect key="frame" x="16" y="267" width="137" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Créer table SQLite"/>
+                                <connections>
+                                    <action selector="CreateTableSQLITE:" destination="s9L-2W-GWU" eventType="touchUpInside" id="4KR-nw-LAs"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="FXC-o7-prj"/>
@@ -70,10 +78,10 @@
             </objects>
             <point key="canvasLocation" x="1877.5999999999999" y="466.99507389162562"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Trajet View Controller-->
         <scene sceneID="Oav-7o-MxG">
             <objects>
-                <viewController id="hxC-fg-Q5x" sceneMemberID="viewController">
+                <viewController id="hxC-fg-Q5x" customClass="AddTrajetViewController" customModule="if26_projet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3gQ-Xc-Epk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -85,7 +93,8 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <segue destination="aDs-qs-RUp" kind="show" id="GrG-a5-8qr"/>
+                                    <action selector="showSearchPlaceFromGareArrive:" destination="hxC-fg-Q5x" eventType="touchDown" id="dqI-s2-aG9"/>
+                                    <segue destination="aDs-qs-RUp" kind="show" id="7zR-rX-3CH"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Départ" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p17-wb-RGM">
@@ -95,7 +104,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
-                                    <segue destination="aDs-qs-RUp" kind="show" id="PfR-n7-dFK"/>
+                                    <action selector="showSearchPlaceFromGareDepart:" destination="hxC-fg-Q5x" eventType="touchDown" id="Iu3-wC-cN2"/>
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ajouter un trajet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DBr-Mr-cBT">
@@ -110,11 +119,19 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Enregistrer"/>
+                                <connections>
+                                    <action selector="saveButtonClick:" destination="hxC-fg-Q5x" eventType="touchUpInside" id="310-we-K5I"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Lhg-Rm-t01"/>
                     </view>
+                    <connections>
+                        <outlet property="inputTextGareArrive" destination="wCP-nE-yjc" id="1h8-Vc-xXk"/>
+                        <outlet property="inputTextGareDepart" destination="p17-wb-RGM" id="F4k-5h-mHh"/>
+                        <outlet property="saveButton" destination="fbX-BI-yzX" id="y2L-UU-dLK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CaD-rL-Nzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -123,7 +140,7 @@
         <!--Search Place Controller-->
         <scene sceneID="WPU-sk-p6q">
             <objects>
-                <viewController id="aDs-qs-RUp" customClass="SearchPlaceController" customModule="if26_projet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SearchPlace" id="aDs-qs-RUp" customClass="SearchPlaceController" customModule="if26_projet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oxN-dj-L4b">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -143,7 +160,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Bordeaux" borderStyle="roundedRect" placeholder="Nom gare" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yKA-n6-BVL">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nom gare" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yKA-n6-BVL">
                                 <rect key="frame" x="8" y="98" width="282" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
@@ -199,10 +216,10 @@
             </objects>
             <point key="canvasLocation" x="2801" y="-233"/>
         </scene>
-        <!--Configuration-->
+        <!--IF26_PROJET-->
         <scene sceneID="iPa-uW-Vwd">
             <objects>
-                <tabBarController title="Configuration" id="bwg-dH-i5B" sceneMemberID="viewController">
+                <tabBarController title="IF26_PROJET" id="bwg-dH-i5B" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lma-7m-3cf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -237,10 +254,10 @@
             </objects>
             <point key="canvasLocation" x="744" y="-232.08395802098951"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Trajets Table View Controller-->
         <scene sceneID="viY-w9-DIQ">
             <objects>
-                <tableViewController id="rTh-7W-69C" sceneMemberID="viewController">
+                <tableViewController id="rTh-7W-69C" customClass="TrajetsTableViewController" customModule="if26_projet" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Y2D-uY-wzj">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -264,6 +281,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="7wd-Hn-P1e">
+                        <barButtonItem key="leftBarButtonItem" title="Reload" id="PF2-sO-Y0e">
+                            <connections>
+                                <action selector="ReloadButtonClicked:" destination="rTh-7W-69C" id="ZlF-Vz-EEB"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="+" id="Yqq-6e-fz7">
                             <connections>
                                 <segue destination="hxC-fg-Q5x" kind="show" id="q9Y-H7-3Ox"/>
@@ -276,7 +298,4 @@
             <point key="canvasLocation" x="1564" y="-233"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="PfR-n7-dFK"/>
-    </inferredMetricsTieBreakers>
 </document>

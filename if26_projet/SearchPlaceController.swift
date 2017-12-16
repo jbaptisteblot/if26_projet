@@ -8,13 +8,28 @@
 
 import UIKit
 
+protocol SearchPlaceControllerDelegate {
+    func searchPlaceControllerResponse(trajet: Trajet)
+}
+
 class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var gareList:[Gare] = [Gare.init(id: "test", name: "test")]
+    public var trajet:Trajet = Trajet.init()
+    public var typeSearch:String = ""
+    var delegate: SearchPlaceControllerDelegate?
+    var gareList:[Gare] = []
     @IBOutlet weak var input_NomGare: UITextField!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        switch typeSearch {
+        case "depart":
+            input_NomGare.placeholder = "Gare Départ"
+        case "arrive":
+            input_NomGare.placeholder = "Gare Arrivée"
+        default:
+            input_NomGare.placeholder = "Nom Gare"
+        }
         tableView.delegate = self
         tableView.dataSource = self
 
@@ -66,7 +81,16 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let viewController = storyboard?.instantiateViewController(withIdentifier: <#T##String#>)
+        //let viewController = storyboard?.instantiateViewController(withIdentifier: <#T##String#>)
+        print(indexPath.row)
+        if(typeSearch == "depart") {
+            trajet.gareDepart = gareList[indexPath.row]
+        }
+        else if(typeSearch == "arrive") {
+            trajet.gareArrive = gareList[indexPath.row]
+        }
+        self.delegate?.searchPlaceControllerResponse(trajet: trajet)
+        navigationController?.popViewController(animated: true)
     }
     @IBOutlet weak var tableView: UITableView!
     /*

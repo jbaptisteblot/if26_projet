@@ -25,6 +25,9 @@ class ConfigurationController: UIViewController {
     @IBAction func SaveButtonClicked(_ sender: Any) {
         APIKEY.SNCF = SNCFApikeyInput.text!
     }
+    @IBAction func CreateTableSQLITE(_ sender: Any) {
+        Database().createTable()
+    }
     
     /*
     // MARK: - Navigation
