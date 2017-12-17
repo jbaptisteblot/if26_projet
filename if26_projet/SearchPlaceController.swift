@@ -42,31 +42,30 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func searchButton(_ sender: Any) {
-        
-        let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/places?type[]=stop_area&q=" + input_NomGare.text!)
-        
-        let config = URLSessionConfiguration.default
-        config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
-        let session = URLSession.init(configuration : config)
-        session.dataTask(with: url!) { (data, response, error) in
-            if let data = data {
-                do {
-                    let decoder = JSONDecoder()
-                    self.gareList.removeAll()
-                    let json = try! JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
-                    
-                    let stopAreasJSON = try! decoder.decode(GareGlobalJsonData.self, from: data)
-                    for stopAreaJSON in stopAreasJSON.places {
-                        let gareJSON = stopAreaJSON.stop_area
-                        self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
-                    }
-                    DispatchQueue.main.async {
-                     self.tableView.reloadData()
+        if(input_NomGare.text != nil) {
+            let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/places?type[]=stop_area&q=" + input_NomGare.text!)
+            
+            let config = URLSessionConfiguration.default
+            config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
+            let session = URLSession.init(configuration : config)
+            session.dataTask(with: url!) { (data, response, error) in
+                if let data = data {
+                    do {
+                        let decoder = JSONDecoder()
+                        self.gareList.removeAll()
+                        let stopAreasJSON = try! decoder.decode(GareGlobalJsonData.self, from: data)
+                        for stopAreaJSON in stopAreasJSON.places {
+                            let gareJSON = stopAreaJSON.stop_area
+                            self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
+                        }
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
                     }
                 }
-            }
-        }.resume()
+                }.resume()
+        }
+
     }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

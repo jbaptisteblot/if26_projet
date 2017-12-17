@@ -52,7 +52,9 @@ class AddTrajetViewController: UIViewController, SearchPlaceControllerDelegate {
 
     @IBAction func saveButtonClick(_ sender: Any) {
         if(trajet.gareArrive != nil && trajet.gareDepart != nil) {
+            
             db.findOrInsert(trajet: trajet)
+            navigationController?.popViewController(animated: true)
         }
     }
     
