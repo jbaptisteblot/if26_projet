@@ -9,9 +9,16 @@
 import UIKit
 
 class DepartTableViewController: UITableViewController {
-
+    let dateFormatter = DateFormatter()
+    let dateFormatterHour = DateFormatter()
+    
+    var trajet:Trajet = Trajet()
+    var departList:[Depart] = []
     override func viewDidLoad() {
         super.viewDidLoad()
+        dateFormatter.dateFormat = "yyyyMMdd'T'kkmmss"
+        dateFormatterHour.dateFormat = "kk'h'mm"
+        searchData()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -34,18 +41,53 @@ class DepartTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return departList.count
     }
+    
+    func searchData() {
+        let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/journeys?to=" + trajet.gareArrive!.id +
+            "&from=" + trajet.gareDepart!.id
+            + "&min_nb_journeys=5")
+        
+        let config = URLSessionConfiguration.default
+        config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
+        let session = URLSession.init(configuration : config)
+        session.dataTask(with: url!) { (data, response, error) in
+            if let data = data {
+                do {
+                    let decoder = JSONDecoder()
+                    self.departList.removeAll()
+                    
+                    
+                    let journeysJSON = try! decoder.decode(DepartGlobalJsonData.self, from: data)
+                    for journeyJSON in journeysJSON.journeys {
+                        print(journeyJSON)
+                        //self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
+                        self.departList.append(Depart(id_depart: 1, id_trajet: self.trajet.id_trajet!, heureDepart: self.dateFormatter.date(from: journeyJSON.departure_date_time)!, heureArrive: self.dateFormatter.date(from: journeyJSON.arrival_date_time)!, duration: journeyJSON.duration))
+                    }
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+            }.resume()
+    }
+    
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "departCell", for: indexPath)
 
-        // Configure the cell...
+        cell.textLabel?.text = dateFormatterHour.string(from: departList[indexPath.row].heureDepart) + " -> " + dateFormatterHour.string(from: departList[indexPath.row].heureArrive)
+        cell.detailTextLabel?.text = departList[indexPath.row].durationString()
 
         return cell
     }
-    */
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return (self.trajet.gareDepart?.name)! + " vers " + (self.trajet.gareArrive?.name)!
+    }
+
+ 
 
     /*
     // Override to support conditional editing of the table view.
