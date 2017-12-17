@@ -8,18 +8,31 @@
 
 import UIKit
 
+class TrajetTableViewCell: UITableViewCell {
+    @IBOutlet weak var labelGareDepart: UILabel!
+    @IBOutlet weak var labelGareArrive: UILabel!
+    
+}
+
 class TrajetsTableViewController: UITableViewController {
     let db:Database = Database()
+    var trajets:[Trajet] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(db.selectTrajet())
+        reloadData()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
+    func reloadData() {
+        trajets.removeAll()
+        trajets += db.selectTrajet()
+        tableView.reloadData()
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -29,26 +42,27 @@ class TrajetsTableViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return trajets.count
     }
 
     @IBAction func ReloadButtonClicked(_ sender: Any) {
-        print(db.selectTrajet())
+        reloadData()
     }
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: "trajetCell", for: indexPath) as! TrajetTableViewCell
         // Configure the cell...
-
+        print(indexPath.row)
+        cell.labelGareDepart.text = trajets[indexPath.row].gareDepart?.name
+        cell.labelGareArrive.text = trajets[indexPath.row].gareArrive?.name
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.

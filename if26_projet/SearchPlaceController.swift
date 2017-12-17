@@ -78,6 +78,7 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "gareCell", for: indexPath) as UITableViewCell
         
         cell.textLabel?.text = gareList[indexPath.row].name
+        cell.detailTextLabel?.text = gareList[indexPath.row].id
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
