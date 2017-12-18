@@ -42,8 +42,9 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func searchButton(_ sender: Any) {
-        if(input_NomGare.text != nil) {
-            let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/places?type[]=stop_area&q=" + input_NomGare.text!)
+        let search = input_NomGare.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        if(!search!.isEmpty) {
+            let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/places?type[]=stop_area&q=" + search!)
             
             let config = URLSessionConfiguration.default
             config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
@@ -53,14 +54,19 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
                     do {
                         let decoder = JSONDecoder()
                         self.gareList.removeAll()
-                        let stopAreasJSON = try! decoder.decode(GareGlobalJsonData.self, from: data)
-                        for stopAreaJSON in stopAreasJSON.places {
-                            let gareJSON = stopAreaJSON.stop_area
-                            self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
+                        do {
+                            let stopAreasJSON = try decoder.decode(GareGlobalJsonData.self, from: data)
+                            for stopAreaJSON in stopAreasJSON.places {
+                                let gareJSON = stopAreaJSON.stop_area
+                                self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
+                            }
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
+                        } catch {
+                            print(error)
                         }
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
+                        
                     }
                 }
                 }.resume()
