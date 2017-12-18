@@ -147,10 +147,50 @@ class Database {
         }
     }
     func deleteTrajet(id_trajet: Int) {
+        
         do {
             let trajet = self.trajetTable.filter(self.id_trajet == id_trajet)
             let trajetDelete = trajet.delete()
             try self.database.run(trajetDelete)
+            deleteDepart(id_trajet: id_trajet)
+        } catch {
+            print("Erreur lors de la suppression")
+        }
+    }
+    func insertDepart(depart: Depart) {
+        let insertQuery = self.departTable.insert(self.id_trajet <- depart.id_trajet, self.heureDepart <- depart.heureDepartString(), self.heureArrive <- depart.heureArriveString(),self.duree <- depart.duration)
+        do {
+            try self.database.run(insertQuery)
+        } catch {
+            print(error)
+        }
+    }
+    func selectDepart(id_trajet: Int) -> [Depart]{
+        var listDepart:[Depart] = []
+        do {
+            for depart in try self.database.prepare(self.departTable.filter(self.id_trajet == id_trajet)) {
+                let departobj = Depart(id_depart: depart[self.id_depart],id_trajet: id_trajet,heureDepart: depart[self.heureDepart],heureArrive: depart[self.heureArrive],duration: depart[self.duree])
+                listDepart.append(departobj)
+            }
+        } catch {
+            print(error)
+        }
+        return listDepart
+    }
+    func deleteDepart(id_depart: Int) {
+        do {
+            let depart = self.departTable.filter(self.id_depart == id_depart)
+            let departDelete = depart.delete()
+            try self.database.run(departDelete)
+        } catch {
+            print("Erreur lors de la suppression")
+        }
+    }
+    func deleteDepart(id_trajet: Int) {
+        do {
+            let depart = self.departTable.filter(self.id_trajet == id_trajet)
+            let departDelete = depart.delete()
+            try self.database.run(departDelete)
         } catch {
             print("Erreur lors de la suppression")
         }

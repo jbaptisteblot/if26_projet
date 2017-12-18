@@ -242,10 +242,11 @@
                             <outlet property="delegate" destination="jGl-P0-Qns" id="FGP-gf-RFV"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="qpq-DI-dxy"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vxZ-Q4-29U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2801" y="-233"/>
+            <point key="canvasLocation" x="3143.1999999999998" y="-233.49753694581281"/>
         </scene>
         <!--IF26_PROJET-->
         <scene sceneID="iPa-uW-Vwd">

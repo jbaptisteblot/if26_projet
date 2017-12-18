@@ -9,6 +9,7 @@
 import UIKit
 
 class DepartTableViewController: UITableViewController {
+    let database: Database = Database()
     let dateFormatter = DateFormatter()
     let dateFormatterHour = DateFormatter()
     
@@ -16,9 +17,29 @@ class DepartTableViewController: UITableViewController {
     var departList:[Depart] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        dateFormatter.dateFormat = "yyyyMMdd'T'kkmmss"
-        dateFormatterHour.dateFormat = "kk'h'mm"
-        searchData()
+        let listDepartDB = database.selectDepart(id_trajet: trajet.id_trajet!)
+        var latestDepart:Depart? = nil
+        if(listDepartDB.count > 0) {
+            for departdb in listDepartDB {
+                if(departdb.heureDepart < Date()) {
+                    database.deleteDepart(id_trajet: departdb.id_depart)
+                }
+                else if (latestDepart == nil || departdb.heureDepart > latestDepart!.heureDepart) {
+                    latestDepart = departdb
+                }
+            }
+        }
+        if (listDepartDB.count < 5) {
+            if (latestDepart == nil) {
+                searchData(minDate: nil)
+            } else {
+                searchData(minDate: latestDepart!.heureDepartPlusOneString())
+            }
+        }
+        else {
+            departList = listDepartDB
+        }
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -44,10 +65,12 @@ class DepartTableViewController: UITableViewController {
         return departList.count
     }
     
-    func searchData() {
-        let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/journeys?to=" + trajet.gareArrive!.id +
-            "&from=" + trajet.gareDepart!.id
-            + "&min_nb_journeys=5")
+    func searchData(minDate: String?) {
+        var urlStr = "https://api.sncf.com/v1/coverage/sncf/journeys?to=" + trajet.gareArrive!.id + "&from=" + trajet.gareDepart!.id + "&min_nb_journeys=5"
+        if (minDate != nil) {
+            urlStr += "&datime=" + minDate!
+        }
+        let url = URL(string: urlStr)
         
         let config = URLSessionConfiguration.default
         config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
@@ -63,8 +86,9 @@ class DepartTableViewController: UITableViewController {
                     for journeyJSON in journeysJSON.journeys {
                         print(journeyJSON)
                         //self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
-                        self.departList.append(Depart(id_depart: 1, id_trajet: self.trajet.id_trajet!, heureDepart: self.dateFormatter.date(from: journeyJSON.departure_date_time)!, heureArrive: self.dateFormatter.date(from: journeyJSON.arrival_date_time)!, duration: journeyJSON.duration))
+                        self.database.insertDepart(depart: Depart(id_trajet: self.trajet.id_trajet!, heureDepart: journeyJSON.departure_date_time, heureArrive: journeyJSON.arrival_date_time, duration: journeyJSON.duration))
                     }
+                    self.departList = self.database.selectDepart(id_trajet: self.trajet.id_trajet!)
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -78,7 +102,7 @@ class DepartTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "departCell", for: indexPath)
 
-        cell.textLabel?.text = dateFormatterHour.string(from: departList[indexPath.row].heureDepart) + " -> " + dateFormatterHour.string(from: departList[indexPath.row].heureArrive)
+        cell.textLabel?.text = departList[indexPath.row].heureDepartHours() + " -> " + departList[indexPath.row].heureArriveHours()
         cell.detailTextLabel?.text = departList[indexPath.row].durationString()
 
         return cell
