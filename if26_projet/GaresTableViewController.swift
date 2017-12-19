@@ -1,21 +1,21 @@
 //
-//  TrajetsTableViewController.swift
+//  GaresTableViewController.swift
 //  if26_projet
 //
-//  Created by Jean-baptiste Blot on 16/12/2017.
+//  Created by if26-grp1 on 19/12/2017.
 //  Copyright © 2017 Jean-baptiste Blot. All rights reserved.
 //
 
 import UIKit
 
-class TrajetTableViewCell: UITableViewCell {
-    @IBOutlet weak var labelGareDepart: UILabel!
-    @IBOutlet weak var labelGareArrive: UILabel!
+class GareTableViewCell: UITableViewCell {
+    @IBOutlet weak var nomGare: UILabel!
+    
 }
 
-class TrajetsTableViewController: UITableViewController {
+class GaresTableViewController: UITableViewController {
     let db:Database = Database()
-    var trajets:[Trajet] = []
+    var gares:[Gare] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
@@ -25,14 +25,18 @@ class TrajetsTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    @IBAction func ReloadButtonClicked(_ sender: UIBarButtonItem) {
+        reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadData()
     }
     
     func reloadData() {
-        trajets.removeAll()
-        trajets += db.selectTrajet()
+        gares.removeAll()
+        gares += db.selectGareFav()
         tableView.reloadData()
     }
     
@@ -48,46 +52,40 @@ class TrajetsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trajets.count
+        return gares.count
     }
 
-    @IBAction func ReloadButtonClicked(_ sender: Any) {
-        reloadData()
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "trajetCell", for: indexPath) as! TrajetTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "gareCell", for: indexPath) as! GareTableViewCell
         // Configure the cell...
         print(indexPath.row)
-        cell.labelGareDepart.text = trajets[indexPath.row].gareDepart?.name
-        cell.labelGareArrive.text = trajets[indexPath.row].gareArrive?.name
+        cell.nomGare.text = gares[indexPath.row].name
         return cell
     }
- 
 
+    
     
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
- 
+
+    // TODO Add editing
+    // TODO Add Selection de gare
     
+    
+    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            db.deleteTrajet(id_trajet: trajets[indexPath.row].id_trajet!)
-            reloadData()
-        }
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }    
     }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let myVC = storyboard?.instantiateViewController(withIdentifier: "DepartView") as! DepartTableViewController
-        myVC.trajet = trajets[indexPath.row]
-        navigationController?.pushViewController(myVC, animated: true)
-        
-    }
+    */
 
     /*
     // Override to support rearranging the table view.

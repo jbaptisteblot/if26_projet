@@ -14,9 +14,12 @@ class Database {
     let gareTable = Table("gare")
     let trajetTable = Table("trajet")
     let departTable = Table("depart")
+    let gareFavTable = Table("garefav")
+    
     // TABLE GARE
     let id_gare = Expression<String>("id_gare")
     let name_gare = Expression<String>("name_gare")
+    
     // TABLE TRAJET
     let id_trajet = Expression<Int>("id_trajet")
     let gareDepart = Expression<String>("gare_depart")
@@ -28,6 +31,9 @@ class Database {
     let heureArrive = Expression<String>("heure_arrive")
     let duree = Expression<Int>("duree")
     
+    // TABLE GAREFAV
+    let idGareFav = Expression<String>("id_garefav")
+    let nameGareFav = Expression<String>("name_garefav")
     
     init() {
         do {
@@ -35,13 +41,17 @@ class Database {
             let fileUrl = documentDirectory.appendingPathComponent("if26projet").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.database = database
-        }catch { print(error)}
+        } catch { print(error) }
     }
     
     func createTable() {
         let createTableGare = self.gareTable.create{(table) in
             table.column(self.id_gare, primaryKey: true)
             table.column(self.name_gare)
+        }
+        let createTableGareFav = self.gareFavTable.create{(table) in
+            table.column(self.idGareFav, primaryKey: true)
+            table.column(self.nameGareFav)
         }
         let createTableTrajet = self.trajetTable.create{(table) in
             table.column(self.id_trajet, primaryKey: true)
@@ -62,7 +72,8 @@ class Database {
             try self.database.run(createTableGare)
             try self.database.run(createTableTrajet)
             try self.database.run(createTableDepart)
-        } catch { print(error)}
+            try self.database.run(createTableGareFav)
+        } catch { print(error) }
     }
     
     func insertGare(gare: Gare) {
@@ -103,6 +114,46 @@ class Database {
             print(error)
         }
     }
+    // DEBUT TODO GAREFAV
+    func insertGareFav(gare: Gare) {
+        do {
+            let insert = self.gareFavTable.insert(or: .ignore,self.idGareFav <- gare.id, self.nameGareFav <- gare.name)
+            try self.database.run(insert)
+        } catch {
+            print(error)
+        }
+    }
+    func selectGareFav() -> [Gare] {
+        var listGare:[Gare] = []
+        do {
+            for gare in try self.database.prepare(self.gareFavTable) {
+                listGare.append(Gare.init(id: gare[self.idGareFav], name: gare[self.nameGareFav]))
+            }
+        } catch {
+            print("Erreur")
+        }
+        return listGare
+    }
+    func selectGareFav(id_gare: String) -> Gare?{
+        do {
+            for gare in try self.database.prepare(self.gareFavTable.filter(self.idGareFav == id_gare)) {
+                return Gare.init(id: gare[self.idGareFav], name: gare[self.nameGareFav])
+            }
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+    func deleteGareFav(id_gare: String) {
+        do {
+            let gare = self.gareFavTable.filter(self.idGareFav == id_gare)
+            let gareDelete = gare.delete()
+            try self.database.run(gareDelete)
+        } catch {
+            print(error)
+        }
+    }
+    // FIN TODO GAREFAV
     func insertTrajet(trajet: Trajet) {
         insertGare(gare: trajet.gareDepart!)
         insertGare(gare: trajet.gareArrive!)

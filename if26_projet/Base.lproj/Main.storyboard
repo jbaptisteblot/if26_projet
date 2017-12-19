@@ -60,25 +60,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMm-eQ-1Fn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-207" y="950"/>
+            <point key="canvasLocation" x="-208" y="1119"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Gares Table View Controller-->
         <scene sceneID="6lt-JF-JRw">
             <objects>
-                <tableViewController id="CcE-9t-xCr" customClass="GaresTableViewController" customModule="if26_projet" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Gares Table View Controller" id="CcE-9t-xCr" customClass="GaresTableViewController" customModule="if26_projet" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="idS-Ml-G4N">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="tat-xs-hTY">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="gareCell" id="tat-xs-hTY" customClass="GareTableViewCell" customModule="if26_projet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tat-xs-hTY" id="Hdr-A2-YSy">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.666666666666664"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nom de gare" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="l3B-WZ-xVs">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="NomGare" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="l3B-WZ-xVs">
                                             <rect key="frame" x="31" y="11" width="313" height="21"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -87,6 +87,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="nomGare" destination="l3B-WZ-xVs" id="5cs-AW-WxZ"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -94,11 +97,18 @@
                             <outlet property="delegate" destination="CcE-9t-xCr" id="gMu-Bt-xl9"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="Mjq-n5-ZUt"/>
+                    <navigationItem key="navigationItem" title="Root View Controller" id="Mjq-n5-ZUt">
+                        <barButtonItem key="leftBarButtonItem" title="Reload" id="Ql0-hi-RZT">
+                            <connections>
+                                <action selector="ReloadButtonClicked:" destination="CcE-9t-xCr" id="qgn-fz-7H4"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="+" id="bLe-q2-vKe"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mhs-y3-CgA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1528.8" y="98.275862068965523"/>
+            <point key="canvasLocation" x="1850" y="100"/>
         </scene>
         <!--Gares-->
         <scene sceneID="VCN-sZ-g9f">
@@ -115,7 +125,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IJc-5t-rPf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="741" y="99"/>
+            <point key="canvasLocation" x="873" y="100"/>
         </scene>
         <!--Add Trajet View Controller-->
         <scene sceneID="Oav-7o-MxG">
@@ -173,7 +183,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CaD-rL-Nzf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2374" y="-597"/>
+            <point key="canvasLocation" x="2327" y="-817"/>
         </scene>
         <!--Search Place Controller-->
         <scene sceneID="WPU-sk-p6q">
@@ -240,7 +250,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gfv-tI-UDW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3161" y="-324"/>
+            <point key="canvasLocation" x="3214" y="100"/>
         </scene>
         <!--Depart Table View Controller-->
         <scene sceneID="N4K-6O-unB">
@@ -285,7 +295,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vxZ-Q4-29U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3161" y="388"/>
+            <point key="canvasLocation" x="3214" y="-641"/>
         </scene>
         <!--IF26_PROJET-->
         <scene sceneID="iPa-uW-Vwd">
@@ -323,7 +333,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5f-AI-Fbx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="742" y="-596"/>
+            <point key="canvasLocation" x="679" y="-817"/>
         </scene>
         <!--Trajets Table View Controller-->
         <scene sceneID="viY-w9-DIQ">
@@ -384,7 +394,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CPa-M2-6lZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1528.8" y="-597.78325123152717"/>
+            <point key="canvasLocation" x="1522" y="-817"/>
         </scene>
     </scenes>
 </document>
