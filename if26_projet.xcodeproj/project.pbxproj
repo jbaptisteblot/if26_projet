@@ -10,6 +10,7 @@
 		8FA1BF031FE92B7D00ED70FD /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FA1BEF21FE92A3200ED70FD /* SQLite.framework */; };
 		8FA1BF041FE92B8200ED70FD /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FA1BEF21FE92A3200ED70FD /* SQLite.framework */; };
 		8FA1BF051FE92B8200ED70FD /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8FA1BEF21FE92A3200ED70FD /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8FA1BF0A1FE9342000ED70FD /* GaresTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FA1BF091FE9342000ED70FD /* GaresTableViewController.swift */; };
 		B4065E911FE197EF00E9D4D3 /* Gare.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4065E901FE197EF00E9D4D3 /* Gare.swift */; };
 		B4065E951FE19A0A00E9D4D3 /* Trajet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4065E941FE19A0A00E9D4D3 /* Trajet.swift */; };
 		B4065E971FE2DDDB00E9D4D3 /* apikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4065E961FE2DDDB00E9D4D3 /* apikey.swift */; };
@@ -102,6 +103,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8FA1BF091FE9342000ED70FD /* GaresTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GaresTableViewController.swift; sourceTree = "<group>"; };
 		B4065E901FE197EF00E9D4D3 /* Gare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gare.swift; sourceTree = "<group>"; };
 		B4065E941FE19A0A00E9D4D3 /* Trajet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trajet.swift; sourceTree = "<group>"; };
 		B4065E961FE2DDDB00E9D4D3 /* apikey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apikey.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				B4C5C5B31FE563B400D32734 /* SQLite.swift */,
 				B4C5C5CC1FE59A9600D32734 /* Depart.swift */,
 				B4C5C5CE1FE5A77200D32734 /* TrajetsTableViewController.swift */,
+				8FA1BF091FE9342000ED70FD /* GaresTableViewController.swift */,
 				B4262A3E1FE6BB9000EDA85C /* DepartTableViewController.swift */,
 			);
 			path = if26_projet;
@@ -339,6 +342,7 @@
 				B4065E971FE2DDDB00E9D4D3 /* apikey.swift in Sources */,
 				B42EFA5B1FD050900072024D /* if26_projet.xcdatamodeld in Sources */,
 				B4262A3F1FE6BB9000EDA85C /* DepartTableViewController.swift in Sources */,
+				8FA1BF0A1FE9342000ED70FD /* GaresTableViewController.swift in Sources */,
 				B4065E9B1FE2E02300E9D4D3 /* ConfigurationController.swift in Sources */,
 				B4065E9D1FE2F07200E9D4D3 /* SearchPlaceController.swift in Sources */,
 				B42EFA551FD050900072024D /* ViewController.swift in Sources */,
