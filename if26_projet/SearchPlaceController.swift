@@ -89,13 +89,21 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let viewController = storyboard?.instantiateViewController(withIdentifier: <#T##String#>)
         print(indexPath.row)
-        if(typeSearch == "depart") {
+        if (typeSearch == "depart") {
             trajet.gareDepart = gareList[indexPath.row]
+            self.delegate?.searchPlaceControllerResponse(trajet: trajet)
         }
-        else if(typeSearch == "arrive") {
+        else if (typeSearch == "arrive") {
             trajet.gareArrive = gareList[indexPath.row]
+            self.delegate?.searchPlaceControllerResponse(trajet: trajet)
         }
-        self.delegate?.searchPlaceControllerResponse(trajet: trajet)
+        else if (typeSearch == "favori") {
+            // Ajout en base de données de la gare choisie
+            let db:Database = Database()
+            let gare = gareList[indexPath.row]
+            db.findOrInsertGareFav(gareFav: Gare.init(id: gare.id, name: gare.name))
+            print("Ajout de la gare choisie")
+        }
         navigationController?.popViewController(animated: true)
     }
     @IBOutlet weak var tableView: UITableView!

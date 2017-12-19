@@ -10,7 +10,6 @@ import UIKit
 
 class GareTableViewCell: UITableViewCell {
     @IBOutlet weak var nomGare: UILabel!
-    
 }
 
 class GaresTableViewController: UITableViewController {
@@ -20,13 +19,18 @@ class GaresTableViewController: UITableViewController {
         super.viewDidLoad()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
-
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     @IBAction func ReloadButtonClicked(_ sender: UIBarButtonItem) {
         reloadData()
+    }
+    
+    @IBAction func showSearchPlace(_ sender: UIBarButtonItem) {
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "SearchPlace") as! SearchPlaceController
+        myVC.typeSearch = "favori"
+        navigationController?.pushViewController(myVC, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -72,7 +76,6 @@ class GaresTableViewController: UITableViewController {
     }
 
     // TODO Add editing
-    // TODO Add Selection de gare
     
     
     /*

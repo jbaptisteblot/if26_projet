@@ -45,6 +45,7 @@ class Database {
     }
     
     func createTable() {
+        dropTables()
         let createTableGare = self.gareTable.create{(table) in
             table.column(self.id_gare, primaryKey: true)
             table.column(self.name_gare)
@@ -69,10 +70,20 @@ class Database {
             table.foreignKey(self.id_trajet, references: self.trajetTable, self.id_trajet)
         }
         do {
+            dropTables()
             try self.database.run(createTableGare)
             try self.database.run(createTableTrajet)
             try self.database.run(createTableDepart)
             try self.database.run(createTableGareFav)
+        } catch { print(error) }
+    }
+    
+    func dropTables() {
+        do {
+            try self.database.run(gareTable.drop(ifExists: true))
+            try self.database.run(trajetTable.drop(ifExists: true))
+            try self.database.run(departTable.drop(ifExists: true))
+            try self.database.run(gareFavTable.drop(ifExists: true))
         } catch { print(error) }
     }
     
@@ -88,7 +99,7 @@ class Database {
         var listGare:[Gare] = []
         do {
             for gare in try self.database.prepare(self.gareTable) {
-                listGare.append(Gare.init(id: gare[self.id_gare], name: gare[self.name_gare]))
+                listGare.append(Gare.init(id: gare[self.idGareFav], name: gare[self.nameGareFav]))
                 }
         } catch {
             print("Erreur")
@@ -195,6 +206,11 @@ class Database {
     func findOrInsert(trajet: Trajet) {
         if(trajet.gareDepart != nil && trajet.gareArrive != nil && self.selectTrajet(gareDepart: trajet.gareDepart!, gareArrive: trajet.gareArrive!) == nil){
             self.insertTrajet(trajet: trajet)
+        }
+    }
+    func findOrInsertGareFav(gareFav: Gare) {
+        if(self.selectGareFav(id_gare: gareFav.id) == nil) {
+            self.insertGareFav(gare: gareFav)
         }
     }
     func deleteTrajet(id_trajet: Int) {
