@@ -66,7 +66,7 @@ class Database {
             table.column(self.heureDepart)
             table.column(self.heureArrive)
             table.column(self.duree)
-            table.foreignKey(self.id_trajet, references: self.trajetTable, self.id_trajet)
+            table.foreignKey(self.id_trajet, references: self.trajetTable, self.id_trajet, delete: .noAction)
         }
         do {
             dropTables()
@@ -190,10 +190,10 @@ class Database {
             let gare = self.gareFavTable.filter(self.idGareFav == id_gare)
             let gareDelete = gare.delete()
             try self.database.run(gareDelete)
-            // On essaie de supprimer de Gare - sera bloqué si la gare est utilisée ailleurs.
-            deleteGare(id_gare: id_gare)
+            // On essaie de supprimer de Gare - sera bloqué si la gare est utilisée ailleurs. SPOILER : CA BLOQUE PAS
+            // deleteGare(id_gare: id_gare)
         } catch {
-            print(error)
+            print("Erreur lors de la suppression")
         }
     }
     
@@ -245,10 +245,15 @@ class Database {
     
     func deleteTrajet(id_trajet: Int) {
         do {
+            // TODO Implémenter la suppression de gares
+            //var listeGares:[Gare] = []
             let trajet = self.trajetTable.filter(self.id_trajet == id_trajet)
             let trajetDelete = trajet.delete()
             try self.database.run(trajetDelete)
             deleteDepart(id_trajet: id_trajet)
+            /*for gare in listeGares {
+                
+            }*/
         } catch {
             print("Erreur lors de la suppression")
         }
