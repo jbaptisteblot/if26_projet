@@ -22,6 +22,7 @@ class AddTrajetViewController: UIViewController, SearchPlaceControllerDelegate {
         myVC.delegate = self
         navigationController?.pushViewController(myVC, animated: true)
     }
+    
     @IBAction func showSearchPlaceFromGareDepart(_ sender: Any) {
         let myVC = storyboard?.instantiateViewController(withIdentifier: "SearchPlace") as! SearchPlaceController
         myVC.trajet = trajet
@@ -29,6 +30,7 @@ class AddTrajetViewController: UIViewController, SearchPlaceControllerDelegate {
         myVC.delegate = self
         navigationController?.pushViewController(myVC, animated: true)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -39,6 +41,7 @@ class AddTrajetViewController: UIViewController, SearchPlaceControllerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     func searchPlaceControllerResponse(trajet: Trajet)
     {
         self.trajet = trajet

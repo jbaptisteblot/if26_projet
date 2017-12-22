@@ -33,7 +33,6 @@ class Database {
     
     // TABLE GAREFAV
     let idGareFav = Expression<String>("id_garefav")
-    let nameGareFav = Expression<String>("name_garefav")
     
     init() {
         do {
@@ -52,7 +51,7 @@ class Database {
         }
         let createTableGareFav = self.gareFavTable.create{(table) in
             table.column(self.idGareFav, primaryKey: true)
-            table.column(self.nameGareFav)
+            table.foreignKey(self.idGareFav, references: self.gareTable, self.id_gare)
         }
         let createTableTrajet = self.trajetTable.create{(table) in
             table.column(self.id_trajet, primaryKey: true)
@@ -125,30 +124,56 @@ class Database {
             print(error)
         }
     }
-    // DEBUT TODO GAREFAV
+    
     func insertGareFav(gare: Gare) {
+        // On ajoute la gare à la BDD normalement, en dehors du do pour permettre la suite si la gare existe déjà
+        insertGare(gare: gare)
+        // On ajoute l'ID de gare à la table GareFav
         do {
-            let insert = self.gareFavTable.insert(or: .ignore,self.idGareFav <- gare.id, self.nameGareFav <- gare.name)
+            let insert = self.gareFavTable.insert(or: .ignore,self.idGareFav <- gare.id)
             try self.database.run(insert)
         } catch {
             print(error)
         }
     }
+    
+    func findOrInsertGareFav(gareFav: Gare) {
+        if(self.selectGareFav(id_gare: gareFav.id) == nil) {
+            self.insertGareFav(gare: gareFav)
+        }
+    }
+    
     func selectGareFav() -> [Gare] {
         var listGare:[Gare] = []
         do {
-            for gare in try self.database.prepare(self.gareFavTable) {
-                listGare.append(Gare.init(id: gare[self.idGareFav], name: gare[self.nameGareFav]))
+            for gare in try self.database.prepare(self.gareTable) {
+                if (checkIfGareFaved(gare_id: gare[self.id_gare])) {
+                    listGare.append(Gare.init(id: gare[self.id_gare], name: gare[self.name_gare]))
+                }
             }
         } catch {
             print("Erreur")
         }
         return listGare
     }
-    func selectGareFav(id_gare: String) -> Gare?{
+    
+    func checkIfGareFaved(gare_id: String) -> Bool {
         do {
-            for gare in try self.database.prepare(self.gareFavTable.filter(self.idGareFav == id_gare)) {
-                return Gare.init(id: gare[self.idGareFav], name: gare[self.nameGareFav])
+            for _ in try self.database.prepare(self.gareFavTable.filter(self.idGareFav == gare_id)) {
+                return true;
+            }
+        } catch {
+            print(error)
+        }
+        return false;
+    }
+    
+    func selectGareFav(id_gare: String) -> Gare? {
+        do {
+            for gare in try self.database.prepare(self.gareTable.filter(self.id_gare == id_gare)) {
+                if (checkIfGareFaved(gare_id: gare[self.id_gare])) {
+                    return Gare.init(id: gare[self.id_gare], name: gare[self.name_gare])
+                }
             }
         } catch {
             print(error)
@@ -157,18 +182,20 @@ class Database {
     }
     func deleteGareFav(id_gare: String) {
         do {
+            // On supprime de GareFav
             let gare = self.gareFavTable.filter(self.idGareFav == id_gare)
             let gareDelete = gare.delete()
             try self.database.run(gareDelete)
+            // On essaie de supprimer de Gare - sera bloqué si la gare est utilisée ailleurs.
+            deleteGare(id_gare: id_gare)
         } catch {
             print(error)
         }
     }
-    // FIN TODO GAREFAV
+    
     func insertTrajet(trajet: Trajet) {
         insertGare(gare: trajet.gareDepart!)
         insertGare(gare: trajet.gareArrive!)
-        
         let insertQuery = self.trajetTable.insert(self.gareDepart <- trajet.gareDepart!.id, self.gareArrive <- trajet.gareArrive!.id)
         do {
             try self.database.run(insertQuery)
@@ -187,6 +214,7 @@ class Database {
         }catch { print(error) }
         return listTrajet
     }
+    
     func selectTrajet(gareDepart: Gare, gareArrive: Gare) -> Trajet? {
         do{
             for trajet in try self.database.prepare(self.trajetTable.filter(self.gareDepart == gareDepart.id && self.gareArrive == gareArrive.id)) {
@@ -195,6 +223,7 @@ class Database {
         }catch { print(error) }
         return nil
     }
+    
     func selectTrajet(id_trajet: Int) -> Trajet? {
         do{
             for trajet in try self.database.prepare(self.trajetTable.filter(self.id_trajet == id_trajet)) {
@@ -203,18 +232,14 @@ class Database {
         }catch { print(error) }
         return nil
     }
+    
     func findOrInsert(trajet: Trajet) {
         if(trajet.gareDepart != nil && trajet.gareArrive != nil && self.selectTrajet(gareDepart: trajet.gareDepart!, gareArrive: trajet.gareArrive!) == nil){
             self.insertTrajet(trajet: trajet)
         }
     }
-    func findOrInsertGareFav(gareFav: Gare) {
-        if(self.selectGareFav(id_gare: gareFav.id) == nil) {
-            self.insertGareFav(gare: gareFav)
-        }
-    }
+    
     func deleteTrajet(id_trajet: Int) {
-        
         do {
             let trajet = self.trajetTable.filter(self.id_trajet == id_trajet)
             let trajetDelete = trajet.delete()
@@ -224,6 +249,7 @@ class Database {
             print("Erreur lors de la suppression")
         }
     }
+    
     func insertDepart(depart: Depart) {
         let insertQuery = self.departTable.insert(self.id_trajet <- depart.id_trajet, self.heureDepart <- depart.heureDepartString(), self.heureArrive <- depart.heureArriveString(),self.duree <- depart.duration)
         do {

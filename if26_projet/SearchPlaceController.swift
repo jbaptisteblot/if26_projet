@@ -19,7 +19,6 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
     var gareList:[Gare] = []
     @IBOutlet weak var input_NomGare: UITextField!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         switch typeSearch {
@@ -91,17 +90,19 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
         if (typeSearch == "depart") {
             trajet.gareDepart = gareList[indexPath.row]
             self.delegate?.searchPlaceControllerResponse(trajet: trajet)
+            print ("Envoi d'une réponse à l'appel depart")
         }
         else if (typeSearch == "arrive") {
             trajet.gareArrive = gareList[indexPath.row]
             self.delegate?.searchPlaceControllerResponse(trajet: trajet)
+            print ("Envoi d'une réponse à l'appel arrive")
         }
         else if (typeSearch == "favori") {
             // Ajout en base de données de la gare choisie
             let db:Database = Database()
             let gare = gareList[indexPath.row]
             db.findOrInsertGareFav(gareFav: Gare.init(id: gare.id, name: gare.name))
-            print("Ajout de la gare choisie")
+            print("Ajout de la gare choisie en fav")
         }
         navigationController?.popViewController(animated: true)
     }
