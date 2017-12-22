@@ -94,6 +94,7 @@ class Database {
             print(error)
         }
     }
+    
     func selectGare() -> [Gare] {
         var listGare:[Gare] = []
         do {
@@ -105,6 +106,7 @@ class Database {
         }
         return listGare
     }
+    
     func selectGare(id_gare: String) -> Gare?{
         do {
             for gare in try self.database.prepare(self.gareTable.filter(self.id_gare == id_gare)) {
@@ -115,6 +117,7 @@ class Database {
         }
         return nil
     }
+    
     func deleteGare(id_gare: String) {
         do {
             let gare = self.gareTable.filter(self.id_gare == id_gare)
@@ -180,6 +183,7 @@ class Database {
         }
         return nil
     }
+    
     func deleteGareFav(id_gare: String) {
         do {
             // On supprime de GareFav
@@ -258,6 +262,7 @@ class Database {
             print(error)
         }
     }
+    
     func selectDepart(id_trajet: Int) -> [Depart]{
         var listDepart:[Depart] = []
         do {
@@ -270,6 +275,7 @@ class Database {
         }
         return listDepart
     }
+    
     func deleteDepart(id_depart: Int) {
         do {
             let depart = self.departTable.filter(self.id_depart == id_depart)
@@ -279,6 +285,7 @@ class Database {
             print("Erreur lors de la suppression")
         }
     }
+    
     func deleteDepart(id_trajet: Int) {
         do {
             let depart = self.departTable.filter(self.id_trajet == id_trajet)
@@ -288,5 +295,4 @@ class Database {
             print("Erreur lors de la suppression")
         }
     }
-    
 }
