@@ -25,22 +25,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remettre à zéro" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6mK-lN-p8V">
-                                <rect key="frame" x="16" y="290.66666666666669" width="343" height="31.333333333333314"/>
+                                <rect key="frame" x="16" y="328.66666666666669" width="343" height="31.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4PN-Hf-QzH">
-                                <rect key="frame" x="243" y="680" width="116" height="38"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                <state key="normal" title="Sauvegarder"/>
-                                <connections>
-                                    <action selector="SaveButtonClicked:" destination="s9L-2W-GWU" eventType="touchUpInside" id="Lb5-FB-dhX"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zdd-QG-h0j">
-                                <rect key="frame" x="16" y="420" width="343" height="30"/>
+                                <rect key="frame" x="16" y="450" width="343" height="30"/>
                                 <state key="normal" title="Recréer les tables SQLite"/>
                                 <connections>
                                     <action selector="CreateTableSQLITE:" destination="s9L-2W-GWU" eventType="touchUpInside" id="4KR-nw-LAs"/>
@@ -59,22 +50,31 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder explication" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99g-rw-WRn">
-                                <rect key="frame" x="16" y="338" width="343" height="21"/>
+                                <rect key="frame" x="16" y="376" width="343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder disclaimer suppression" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WQ6-zi-lVQ">
-                                <rect key="frame" x="16" y="375" width="343" height="21"/>
+                                <rect key="frame" x="16" y="413" width="343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4PN-Hf-QzH">
+                                <rect key="frame" x="243" y="274.66666666666669" width="116" height="38"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Sauvegarder"/>
+                                <connections>
+                                    <action selector="SaveButtonClicked:" destination="s9L-2W-GWU" eventType="touchUpInside" id="Lb5-FB-dhX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="Zdd-QG-h0j" secondAttribute="trailing" constant="16" id="3Be-Yx-zBA"/>
                             <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="A9n-Lt-hnA" secondAttribute="trailing" constant="16" id="3OY-cQ-tJk"/>
+                            <constraint firstItem="WQ6-zi-lVQ" firstAttribute="top" secondItem="99g-rw-WRn" secondAttribute="bottom" constant="16" id="5nh-eR-bDj"/>
                             <constraint firstItem="A9n-Lt-hnA" firstAttribute="top" secondItem="Cga-ea-Lgr" secondAttribute="bottom" constant="16" id="Dd0-2p-MTL"/>
                             <constraint firstItem="99g-rw-WRn" firstAttribute="leading" secondItem="FXC-o7-prj" secondAttribute="leading" constant="16" id="IXN-W4-R6v"/>
                             <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="rVW-Ha-hxn" secondAttribute="trailing" constant="16" id="M5y-ju-n5n"/>
@@ -82,15 +82,16 @@
                             <constraint firstItem="Zdd-QG-h0j" firstAttribute="leading" secondItem="FXC-o7-prj" secondAttribute="leading" constant="16" id="OUS-2v-zme"/>
                             <constraint firstItem="Cga-ea-Lgr" firstAttribute="top" secondItem="FXC-o7-prj" secondAttribute="top" constant="100" id="PKq-cf-JaA"/>
                             <constraint firstItem="Cga-ea-Lgr" firstAttribute="leading" secondItem="FXC-o7-prj" secondAttribute="leading" constant="16" id="Pxu-wT-pBA"/>
+                            <constraint firstItem="4PN-Hf-QzH" firstAttribute="top" secondItem="rVW-Ha-hxn" secondAttribute="bottom" constant="16" id="S7q-VO-sN4"/>
                             <constraint firstItem="6mK-lN-p8V" firstAttribute="leading" secondItem="FXC-o7-prj" secondAttribute="leading" constant="16" id="W6M-DW-ayN"/>
-                            <constraint firstItem="6mK-lN-p8V" firstAttribute="top" secondItem="rVW-Ha-hxn" secondAttribute="bottom" constant="32" id="YCh-h0-h5d"/>
-                            <constraint firstItem="99g-rw-WRn" firstAttribute="top" secondItem="6mK-lN-p8V" secondAttribute="bottom" constant="16" id="dFS-P1-ksv"/>
                             <constraint firstItem="rVW-Ha-hxn" firstAttribute="top" secondItem="A9n-Lt-hnA" secondAttribute="bottom" constant="16" id="dxh-ag-WeF"/>
-                            <constraint firstItem="WQ6-zi-lVQ" firstAttribute="top" secondItem="99g-rw-WRn" secondAttribute="bottom" constant="16" id="fqO-nP-dsD"/>
+                            <constraint firstItem="99g-rw-WRn" firstAttribute="top" secondItem="6mK-lN-p8V" secondAttribute="bottom" constant="16" id="hcA-IR-0BA"/>
+                            <constraint firstItem="6mK-lN-p8V" firstAttribute="top" secondItem="4PN-Hf-QzH" secondAttribute="bottom" constant="16" id="iTb-2j-mHH"/>
                             <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="WQ6-zi-lVQ" secondAttribute="trailing" constant="16" id="id1-23-i06"/>
                             <constraint firstItem="rVW-Ha-hxn" firstAttribute="leading" secondItem="FXC-o7-prj" secondAttribute="leading" constant="16" id="j92-8T-cdz"/>
-                            <constraint firstItem="Zdd-QG-h0j" firstAttribute="top" secondItem="WQ6-zi-lVQ" secondAttribute="bottom" constant="24" id="ktu-fP-c2x"/>
                             <constraint firstItem="WQ6-zi-lVQ" firstAttribute="leading" secondItem="FXC-o7-prj" secondAttribute="leading" constant="16" id="q6Y-vO-VVr"/>
+                            <constraint firstItem="Zdd-QG-h0j" firstAttribute="top" secondItem="WQ6-zi-lVQ" secondAttribute="bottom" constant="16" id="q86-yO-AQe"/>
+                            <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="4PN-Hf-QzH" secondAttribute="trailing" constant="16" id="s4B-Ht-dL2"/>
                             <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="99g-rw-WRn" secondAttribute="trailing" constant="16" id="vx8-qW-xHJ"/>
                             <constraint firstItem="FXC-o7-prj" firstAttribute="trailing" secondItem="6mK-lN-p8V" secondAttribute="trailing" constant="16" id="w8W-ln-9VQ"/>
                         </constraints>

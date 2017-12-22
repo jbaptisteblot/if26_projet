@@ -99,7 +99,7 @@ class Database {
         var listGare:[Gare] = []
         do {
             for gare in try self.database.prepare(self.gareTable) {
-                listGare.append(Gare.init(id: gare[self.idGareFav], name: gare[self.nameGareFav]))
+                listGare.append(Gare.init(id: gare[self.id_gare], name: gare[self.name_gare]))
                 }
         } catch {
             print("Erreur")
