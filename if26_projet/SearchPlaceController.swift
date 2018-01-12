@@ -71,6 +71,15 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
                         }
                     }
                     }.resume()
+            } else {
+                //session.dataTask(with: <#T##URL#>) { (data, response, error) in
+                        do {
+                            self.gareList.removeAll()
+                            DispatchQueue.main.async {
+                                self.tableView.reloadData()
+                            }
+                        }
+                    //}.resume()
             }
         }
 
