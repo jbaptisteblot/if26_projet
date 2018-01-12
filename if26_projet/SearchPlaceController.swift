@@ -48,27 +48,30 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
             let config = URLSessionConfiguration.default
             config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
             let session = URLSession.init(configuration : config)
-            session.dataTask(with: url!) { (data, response, error) in
-                if let data = data {
-                    do {
-                        let decoder = JSONDecoder()
-                        self.gareList.removeAll()
+            // On vérifie si l'URL n'est pas égale à null afin d'éviter de crash en cas de retour vide
+            if let validUrl = url {
+                session.dataTask(with: validUrl) { (data, response, error) in
+                    if let data = data {
                         do {
-                            let stopAreasJSON = try decoder.decode(GareGlobalJsonData.self, from: data)
-                            for stopAreaJSON in stopAreasJSON.places {
-                                let gareJSON = stopAreaJSON.stop_area
-                                self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
+                            let decoder = JSONDecoder()
+                            self.gareList.removeAll()
+                            do {
+                                let stopAreasJSON = try decoder.decode(GareGlobalJsonData.self, from: data)
+                                for stopAreaJSON in stopAreasJSON.places {
+                                    let gareJSON = stopAreaJSON.stop_area
+                                    self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
+                                }
+                                DispatchQueue.main.async {
+                                    self.tableView.reloadData()
+                                }
+                            } catch {
+                                print(error)
                             }
-                            DispatchQueue.main.async {
-                                self.tableView.reloadData()
-                            }
-                        } catch {
-                            print(error)
+                            
                         }
-                        
                     }
-                }
-                }.resume()
+                    }.resume()
+            }
         }
 
     }
