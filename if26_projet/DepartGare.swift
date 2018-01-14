@@ -18,7 +18,7 @@ class DepartGare {
     
     init(idDepart:Int, idGareDepart: String, nomGareArrivee: String, heureDepart: Date) {
         dateFormatter.dateFormat = "yyyyMMdd'T'kkmmss"
-        dateFormatterHour.dateFormat = "kk'h'mm"
+        dateFormatterHour.dateFormat = "kk':'mm"
         
         self.idDepart = idDepart
         self.idGareDepart = idGareDepart
@@ -28,7 +28,7 @@ class DepartGare {
     
     init(idDepart: Int, idGareDepart: String, nomGareArrivee: String, heureDepart: String) {
         dateFormatter.dateFormat = "yyyyMMdd'T'kkmmss"
-        dateFormatterHour.dateFormat = "kk'h'mm"
+        dateFormatterHour.dateFormat = "kk':'mm"
         
         self.idDepart = idDepart
         self.idGareDepart = idGareDepart
@@ -38,7 +38,7 @@ class DepartGare {
     
     init(idGareDepart: String, nomGareArrivee: String, heureDepart: String) {
         dateFormatter.dateFormat = "yyyyMMdd'T'kkmmss"
-        dateFormatterHour.dateFormat = "kk'h'mm"
+        dateFormatterHour.dateFormat = "kk':'mm"
         
         self.idDepart = -1
         self.idGareDepart = idGareDepart

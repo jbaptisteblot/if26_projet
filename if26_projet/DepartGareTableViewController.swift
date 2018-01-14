@@ -105,8 +105,8 @@ class DepartGareTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "departCell", for: indexPath)
         
-        cell.textLabel?.text = departList[indexPath.row].nomDestination
-        cell.detailTextLabel?.text = departList[indexPath.row].heureDepartHours()
+        cell.detailTextLabel?.text = departList[indexPath.row].nomDestination
+        cell.textLabel?.text = departList[indexPath.row].heureDepartHours()
         return cell
     }
     
