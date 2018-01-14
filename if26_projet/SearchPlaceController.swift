@@ -41,7 +41,7 @@ class SearchPlaceController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func searchButton(_ sender: Any) {
-        let search = input_NomGare.text?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let search = input_NomGare.text?.trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "+", options: .literal, range: nil)
         if(!search!.isEmpty) {
             let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/places?type[]=stop_area&q=" + search!)
             
