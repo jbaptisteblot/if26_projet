@@ -26,21 +26,22 @@ class DepartTableViewController: UITableViewController {
                     database.deleteDepart(id_trajet: departdb.id_depart)
                 }
                 else if (latestDepart == nil || departdb.heureDepart > latestDepart!.heureDepart) {
+                    // Dernier départ enregistré
                     latestDepart = departdb
+                    self.departList.append(departdb)
+                } else {
+                    // Départ valide enegistré, autre que le dernier
+                    self.departList.append(departdb)
                 }
             }
         }
-        if (listDepartDB.count < 5) {
+        if (self.departList.count < 5) {
             if (latestDepart == nil) {
                 searchData(minDate: nil)
             } else {
                 searchData(minDate: latestDepart!.heureDepartPlusOneString())
             }
         }
-        else {
-            departList = listDepartDB
-        }
-        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

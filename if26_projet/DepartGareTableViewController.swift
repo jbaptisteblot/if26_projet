@@ -19,31 +19,23 @@ class DepartGareTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let listeDepartDB = database.selectDepartGare(idGare: gare.id)
-        var latestDepart:DepartGare? = nil
         // Vérification des départs encore à venir
         if (listeDepartDB.count	> 0) {
             for departDB in listeDepartDB {
                 // Pour chaque départ, s'il est avant la date actuelle, on le supprime.
-                // Sinon, on vérifie s'il s'agit du dernier départ enregistré.
+                // Sinon, on l'ajoute à la liste à afficher..
                 if (departDB.heureDepart < Date()) {
                     database.deleteDepartGare(idDepart: departDB.idDepart)
-                } else if (latestDepart == nil || departDB.heureDepart > latestDepart!.heureDepart) {
-                    latestDepart = departDB
+                } else {
+                    self.departList.append(departDB)
                 }
             }
         }
-        // S'il ne reste plus assez de départs, on en retélécharge.
-        if (listeDepartDB.count < 5) {
-            searchData(minDate: nil)
-        } else {
-            departList = listeDepartDB
+        
+        // S'il ne reste plus assez de départs, on essaie d'actualiser la liste.
+        if (self.departList.count < 10) {
+            searchData()
         }
-        
-        // TODO Finir cette partie
-        // Implémenter l'utilisation de mindate.
-        
-        
-        
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -69,7 +61,7 @@ class DepartGareTableViewController: UITableViewController {
         return departList.count
     }
     
-    func searchData(minDate: String?) {
+    func searchData() {
         // Création de l'URL de requête
         let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/stop_areas/" + gare.id + "/departures?data_freshness=realtime")
         
@@ -84,18 +76,23 @@ class DepartGareTableViewController: UITableViewController {
             if let data = data {
                 do {
                     let decoder = JSONDecoder()
-                    // On vide la table des départs
-                    self.departList.removeAll()
-                    
+                    var firstIteration = true
                     let departuresJSON = try! decoder.decode(DepartGareCollectionJson.self, from: data)
                     for departureJSON in departuresJSON.departures {
-                        // Pour chaque départ, on l'ajoute en BDD
-                        self.database.insertDepartGare(depart: DepartGare(
+                        // On vide la table des départs et les trains en BDD pour la première itération.
+                        if (firstIteration) {
+                            firstIteration = false
+                            self.departList.removeAll()
+                            self.database.deleteDepartGare(idGare: self.gare.id)
+                        }
+                        // Pour chaque départ, on l'ajoute en BDD et dans la liste des départs.
+                        let departCourant = DepartGare(
                             idGareDepart: self.gare.id,
                             nomGareArrivee: departureJSON.route.direction.name,
                             heureDepart: departureJSON.stop_date_time.departure_date_time
-                            )
                         )
+                        self.departList.append(departCourant)
+                        self.database.insertDepartGare(depart: departCourant)
                     }
                     // On récupère tous les départs en BDD dans la liste des départs
                     self.departList = self.database.selectDepartGare(idGare: self.gare.id)
