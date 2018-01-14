@@ -23,14 +23,16 @@ class DepartGareTableViewController: UITableViewController {
         // Vérification des départs encore à venir
         if (listeDepartDB.count	> 0) {
             for departDB in listeDepartDB {
-                if(departDB.heureDepart < Date()) {
-                    database.deleteDepartGare(idGare: departDB.idGareDepart)
+                // Pour chaque départ, s'il est avant la date actuelle, on le supprime.
+                // Sinon, on vérifie s'il s'agit du dernier départ enregistré.
+                if (departDB.heureDepart < Date()) {
+                    database.deleteDepartGare(idDepart: departDB.idDepart)
                 } else if (latestDepart == nil || departDB.heureDepart > latestDepart!.heureDepart) {
                     latestDepart = departDB
                 }
             }
         }
-        // S'il n'y a plus assez de départs en base de données
+        // S'il ne reste plus assez de départs, on en retélécharge.
         if (listeDepartDB.count < 5) {
             searchData(minDate: nil)
         } else {
@@ -76,16 +78,18 @@ class DepartGareTableViewController: UITableViewController {
         config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
         let session = URLSession.init(configuration : config)
         
-        // Exloitation des données
+        // Exploitation des données
         session.dataTask(with: url!) { (data, response, error) in
+            // Si l'on obtient des données
             if let data = data {
                 do {
                     let decoder = JSONDecoder()
+                    // On vide la table des départs
                     self.departList.removeAll()
                     
                     let departuresJSON = try! decoder.decode(DepartGareCollectionJson.self, from: data)
                     for departureJSON in departuresJSON.departures {
-                        print(departureJSON)
+                        // Pour chaque départ, on l'ajoute en BDD
                         self.database.insertDepartGare(depart: DepartGare(
                             idGareDepart: self.gare.id,
                             nomGareArrivee: departureJSON.route.direction.name,
@@ -93,6 +97,7 @@ class DepartGareTableViewController: UITableViewController {
                             )
                         )
                     }
+                    // On récupère tous les départs en BDD dans la liste des départs
                     self.departList = self.database.selectDepartGare(idGare: self.gare.id)
                     DispatchQueue.main.async {
                         self.tableView.reloadData()

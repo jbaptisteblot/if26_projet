@@ -348,4 +348,14 @@ class Database {
             print("Erreur lors de la suppression")
         }
     }
+    
+    func deleteDepartGare(idDepart: Int) {
+        do {
+            let depart = self.departGareTable.filter(self.idDepartGareFav == idDepart)
+            let departDelete = depart.delete()
+            try self.database.run(departDelete)
+        } catch {
+            print("Erreur lors de la suppression")
+        }
+    }
 }

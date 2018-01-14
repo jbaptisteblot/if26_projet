@@ -85,7 +85,6 @@ class DepartTableViewController: UITableViewController {
                     let journeysJSON = try! decoder.decode(DepartGlobalJsonData.self, from: data)
                     for journeyJSON in journeysJSON.journeys {
                         print(journeyJSON)
-                        //self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
                         self.database.insertDepart(depart: Depart(id_trajet: self.trajet.id_trajet!, heureDepart: journeyJSON.departure_date_time, heureArrive: journeyJSON.arrival_date_time, duration: journeyJSON.duration))
                     }
                     self.departList = self.database.selectDepart(id_trajet: self.trajet.id_trajet!)
