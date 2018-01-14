@@ -74,10 +74,6 @@ class GaresTableViewController: UITableViewController {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-
-    // TODO Add editing
-    
-    
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
@@ -86,6 +82,12 @@ class GaresTableViewController: UITableViewController {
             db.deleteGareFav(id_gare: gares[indexPath.row].id)
             reloadData()
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let myVC = storyboard?.instantiateViewController(withIdentifier: "DepartGareView") as! DepartGareTableViewController
+        myVC.gare = gares[indexPath.row]
+        navigationController?.pushViewController(myVC, animated: true)
     }
     
 

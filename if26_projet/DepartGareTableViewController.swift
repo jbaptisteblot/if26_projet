@@ -1,47 +1,48 @@
 //
-//  DepartTableViewController.swift
+//  DepartGareFavTableViewController.swift
 //  if26_projet
 //
-//  Created by Jean-baptiste Blot on 17/12/2017.
-//  Copyright © 2017 Jean-baptiste Blot. All rights reserved.
+//  Created by Alexis Comte on 12/01/2018.
+//  Copyright © 2018 Jean-baptiste Blot. All rights reserved.
 //
 
 import UIKit
 
-class DepartTableViewController: UITableViewController {
+class DepartGareTableViewController: UITableViewController {
     let database: Database = Database()
     let dateFormatter = DateFormatter()
     let dateFormatterHour = DateFormatter()
     
-    var trajet:Trajet = Trajet()
-    var departList:[Depart] = []
-    
+    var gare:Gare = Gare(id: "", name: "")
+    var departList:[DepartGare] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let listDepartDB = database.selectDepart(id_trajet: trajet.id_trajet!)
-        var latestDepart:Depart? = nil
-        if(listDepartDB.count > 0) {
-            for departdb in listDepartDB {
-                if(departdb.heureDepart < Date()) {
-                    database.deleteDepart(id_trajet: departdb.id_depart)
-                }
-                else if (latestDepart == nil || departdb.heureDepart > latestDepart!.heureDepart) {
-                    latestDepart = departdb
+        let listeDepartDB = database.selectDepartGare(idGare: gare.id)
+        var latestDepart:DepartGare? = nil
+        // Vérification des départs encore à venir
+        if (listeDepartDB.count	> 0) {
+            for departDB in listeDepartDB {
+                if(departDB.heureDepart < Date()) {
+                    database.deleteDepartGare(idGare: departDB.idGareDepart)
+                } else if (latestDepart == nil || departDB.heureDepart > latestDepart!.heureDepart) {
+                    latestDepart = departDB
                 }
             }
         }
-        if (listDepartDB.count < 5) {
-            if (latestDepart == nil) {
-                searchData(minDate: nil)
-            } else {
-                searchData(minDate: latestDepart!.heureDepartPlusOneString())
-            }
-        }
-        else {
-            departList = listDepartDB
+        // S'il n'y a plus assez de départs en base de données
+        if (listeDepartDB.count < 5) {
+            searchData(minDate: nil)
+        } else {
+            departList = listeDepartDB
         }
         
-
+        // TODO Finir cette partie
+        // Implémenter l'utilisation de mindate.
+        
+        
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -67,28 +68,32 @@ class DepartTableViewController: UITableViewController {
     }
     
     func searchData(minDate: String?) {
-        var urlStr = "https://api.sncf.com/v1/coverage/sncf/journeys?to=" + trajet.gareArrive!.id + "&from=" + trajet.gareDepart!.id + "&min_nb_journeys=5"
-        if (minDate != nil) {
-            urlStr += "&datime=" + minDate!
-        }
-        let url = URL(string: urlStr)
+        // Création de l'URL de requête
+        let url = URL(string: "https://api.sncf.com/v1/coverage/sncf/stop_areas/" + gare.id + "/departures?data_freshness=realtime")
         
+        // Configuration de la requête à l'API
         let config = URLSessionConfiguration.default
         config.httpAdditionalHeaders = ["Authorization" : APIKEY.SNCF]
         let session = URLSession.init(configuration : config)
+        
+        // Exloitation des données
         session.dataTask(with: url!) { (data, response, error) in
             if let data = data {
                 do {
                     let decoder = JSONDecoder()
                     self.departList.removeAll()
                     
-                    let journeysJSON = try! decoder.decode(DepartGlobalJsonData.self, from: data)
-                    for journeyJSON in journeysJSON.journeys {
-                        print(journeyJSON)
-                        //self.gareList.append(Gare.init(id: gareJSON.id, name: gareJSON.name))
-                        self.database.insertDepart(depart: Depart(id_trajet: self.trajet.id_trajet!, heureDepart: journeyJSON.departure_date_time, heureArrive: journeyJSON.arrival_date_time, duration: journeyJSON.duration))
+                    let departuresJSON = try! decoder.decode(DepartGareCollectionJson.self, from: data)
+                    for departureJSON in departuresJSON.departures {
+                        print(departureJSON)
+                        self.database.insertDepartGare(depart: DepartGare(
+                            idGareDepart: self.gare.id,
+                            nomGareArrivee: departureJSON.route.direction.name,
+                            heureDepart: departureJSON.stop_date_time.departure_date_time
+                            )
+                        )
                     }
-                    self.departList = self.database.selectDepart(id_trajet: self.trajet.id_trajet!)
+                    self.departList = self.database.selectDepartGare(idGare: self.gare.id)
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }
@@ -99,15 +104,14 @@ class DepartTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "departCell", for: indexPath)
-
-        cell.textLabel?.text = departList[indexPath.row].heureDepartHours() + " -> " + departList[indexPath.row].heureArriveHours()
-        cell.detailTextLabel?.text = departList[indexPath.row].durationString()
-
+        
+        cell.textLabel?.text = departList[indexPath.row].nomDestination
+        cell.detailTextLabel?.text = departList[indexPath.row].heureDepartHours()
         return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return (self.trajet.gareDepart?.name)! + " vers " + (self.trajet.gareArrive?.name)!
+        return "Départs depuis " + (self.gare.name)
     }
 
     /*

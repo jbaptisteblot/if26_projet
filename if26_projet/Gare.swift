@@ -16,6 +16,7 @@ public class Gare {
         self.id = id
         self.name = name
     }
+    
     public var descriptor : String {
         return "Gare(id : \(id), name : \(name))"
     }

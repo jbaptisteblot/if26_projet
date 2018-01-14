@@ -15,6 +15,7 @@ class Database {
     let trajetTable = Table("trajet")
     let departTable = Table("depart")
     let gareFavTable = Table("garefav")
+    let departGareTable = Table("departgare")
     
     // TABLE GARE
     let id_gare = Expression<String>("id_gare")
@@ -33,6 +34,13 @@ class Database {
     
     // TABLE GAREFAV
     let idGareFav = Expression<String>("id_garefav")
+    
+    // TABLE DEPARTGARE
+    let idDepartGareFav = Expression<Int>("id_depart")
+    let idGareDepart = Expression<String>("id_gare")
+    let nomDestinationGare = Expression<String>("gare_destination")
+    let heureDepartGare = Expression<String>("heure_depart")
+    //let heureArriveGare = Expression<String>("heure_arrivee")
     
     init() {
         do {
@@ -66,7 +74,16 @@ class Database {
             table.column(self.heureDepart)
             table.column(self.heureArrive)
             table.column(self.duree)
-            table.foreignKey(self.id_trajet, references: self.trajetTable, self.id_trajet, delete: .noAction)
+            table.foreignKey(self.id_trajet, references: self.trajetTable, self.id_trajet)
+        }
+        let createTableDepartGare = self.departGareTable.create{(table) in
+            table.column(self.idDepartGareFav, primaryKey: true)
+            table.column(self.idGareDepart)
+            table.column(self.nomDestinationGare)
+            table.column(self.heureDepartGare)
+            //table.column(self.heureArriveGare)
+            ///////////
+            table.foreignKey(self.idGareDepart, references: self.gareFavTable, self.idGareFav)
         }
         do {
             dropTables()
@@ -74,6 +91,7 @@ class Database {
             try self.database.run(createTableTrajet)
             try self.database.run(createTableDepart)
             try self.database.run(createTableGareFav)
+            try self.database.run(createTableDepartGare)
         } catch { print(error) }
     }
     
@@ -83,6 +101,7 @@ class Database {
             try self.database.run(trajetTable.drop(ifExists: true))
             try self.database.run(departTable.drop(ifExists: true))
             try self.database.run(gareFavTable.drop(ifExists: true))
+            try self.database.run(departGareTable.drop(ifExists: true))
         } catch { print(error) }
     }
     
@@ -190,7 +209,7 @@ class Database {
             let gare = self.gareFavTable.filter(self.idGareFav == id_gare)
             let gareDelete = gare.delete()
             try self.database.run(gareDelete)
-            // On essaie de supprimer de Gare - sera bloqué si la gare est utilisée ailleurs. SPOILER : CA BLOQUE PAS
+            // On essaie de supprimer de Gare - sera bloqué si la gare est utilisée ailleurs.
             // deleteGare(id_gare: id_gare)
         } catch {
             print("Erreur lors de la suppression")
@@ -281,9 +300,9 @@ class Database {
         return listDepart
     }
     
-    func deleteDepart(id_depart: Int) {
+    func deleteDepart(id_trajet: Int) {
         do {
-            let depart = self.departTable.filter(self.id_depart == id_depart)
+            let depart = self.departTable.filter(self.id_trajet == id_trajet)
             let departDelete = depart.delete()
             try self.database.run(departDelete)
         } catch {
@@ -291,9 +310,38 @@ class Database {
         }
     }
     
-    func deleteDepart(id_trajet: Int) {
+    func insertDepartGare(depart: DepartGare) {
+        let insertQuery = self.departGareTable.insert(
+            self.idGareDepart <- depart.idGareDepart,
+            self.nomDestinationGare <- depart.nomDestination,
+            self.heureDepart <- depart.heureDepartString())
         do {
-            let depart = self.departTable.filter(self.id_trajet == id_trajet)
+            try self.database.run(insertQuery)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func selectDepartGare(idGare: String) -> [DepartGare] {
+        var listDepart:[DepartGare] = []
+        do {
+            for depart in try self.database.prepare(self.departGareTable.filter(self.idGareDepart == idGare)) {
+                let departobj = DepartGare(
+                    idDepart: depart[self.idDepartGareFav],
+                    idGareDepart: idGare,
+                    nomGareArrivee: depart[self.nomDestinationGare],
+                    heureDepart: depart[self.heureDepartGare])
+                listDepart.append(departobj)
+            }
+        } catch {
+            print(error)
+        }
+        return listDepart
+    }
+    
+    func deleteDepartGare(idGare: String) {
+        do {
+            let depart = self.departGareTable.filter(self.idGareDepart == idGare)
             let departDelete = depart.delete()
             try self.database.run(departDelete)
         } catch {

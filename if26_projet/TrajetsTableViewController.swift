@@ -86,7 +86,6 @@ class TrajetsTableViewController: UITableViewController {
         let myVC = storyboard?.instantiateViewController(withIdentifier: "DepartView") as! DepartTableViewController
         myVC.trajet = trajets[indexPath.row]
         navigationController?.pushViewController(myVC, animated: true)
-        
     }
 
     /*
