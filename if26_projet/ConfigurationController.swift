@@ -17,7 +17,7 @@ class ConfigurationController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         APILabel.text = "Afin de pouvoir accéder aux données en ligne de la SNCF, il est nécessaire d'utiliser une clé d'API développeur, à renseigner ici :"
-        RAZLabel1.text = "Cette fonction permet de créer ou recréer les tables de la base de données, lors de la première utilisation de l'application sur un nouvel appareil ou en cas de problème avec les tables."
+        RAZLabel1.text = "Cette fonction permet de recréer les tables de la base de données, en cas de problème avec les tables."
         RAZLabel2.text = "Attention : Ceci supprimera toutes les données enregistrées."
         APILabel.sizeToFit()
         RAZLabel1.sizeToFit()
@@ -34,9 +34,10 @@ class ConfigurationController: UIViewController {
     
     @IBAction func SaveButtonClicked(_ sender: Any) {
         APIKEY.SNCF = SNCFApikeyInput.text!
+        Database().createTable(dropBeforeCreating : false)
     }
     @IBAction func CreateTableSQLITE(_ sender: Any) {
-        Database().createTable()
+        Database().createTable(dropBeforeCreating : true)
     }
     
     /*

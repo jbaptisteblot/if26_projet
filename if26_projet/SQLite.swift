@@ -51,8 +51,10 @@ class Database {
         } catch { print(error) }
     }
     
-    func createTable() {
-        dropTables()
+    func createTable(dropBeforeCreating : Bool) {
+        if (dropBeforeCreating) {
+            dropTables()
+        }
         let createTableGare = self.gareTable.create{(table) in
             table.column(self.id_gare, primaryKey: true)
             table.column(self.name_gare)
@@ -86,7 +88,6 @@ class Database {
             table.foreignKey(self.idGareDepart, references: self.gareFavTable, self.idGareFav)
         }
         do {
-            dropTables()
             try self.database.run(createTableGare)
             try self.database.run(createTableTrajet)
             try self.database.run(createTableDepart)
